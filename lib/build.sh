@@ -157,16 +157,18 @@ install_npm() {
 }
 
 install_autossh() {
-  info "Downloading and installing autossh 1.4e ..."
+  info "Downloading autossh 1.4e ..."
   download_url="http://www.harding.motd.ca/autossh/autossh-1.4e.tgz"
   curl $download_url -s -o - | tar xzf - -C /tmp
 
   # Build autossh
+  info "Building autossh 1.4e ..."
   cd /tmp/autossh-1.4e
-  ./configure
-  make
+  ./configure --quiet
+  make --quiet
 
   # Move autossh binary into .heroku/node and make it executable
+  mkdir $heroku_dir/autossh
   mv /tmp/autossh-1.4e/* $heroku_dir/autossh
   chmod +x $heroku_dir/autossh/autossh
   PATH=$heroku_dir/autossh:$PATH
