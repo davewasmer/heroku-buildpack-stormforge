@@ -2,13 +2,6 @@ build_failed() {
   head "Build failed"
   echo ""
   cat $warnings | indent
-  info "We're sorry this build is failing! If you can't find the issue in application code,"
-  info "please submit a ticket so we can help: https://help.heroku.com/"
-  info "You can also try reverting to our legacy Node.js buildpack:"
-  info "heroku config:set BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-nodejs#v63"
-  info ""
-  info "Love,"
-  info "Heroku"
 }
 
 build_succeeded() {
@@ -161,6 +154,23 @@ install_npm() {
   else
     info "Using default npm version: `npm --version`"
   fi
+}
+}
+
+install_autossh() {
+  info "Downloading and installing autossh 1.4e ..."
+  download_url="http://www.harding.motd.ca/autossh/autossh-1.4e.tgz"
+  curl $download_url -s -o - | tar xzf - -C /tmp
+
+  # Build autossh
+  cd /tmp/autossh-1.4e
+  ./configure
+  make
+
+  # Move autossh binary into .heroku/node and make it executable
+  mv /tmp/autossh-1.4e/* $heroku_dir/autossh
+  chmod +x $heroku_dir/autossh/autossh
+  PATH=$heroku_dir/autossh:$PATH
 }
 
 function build_dependencies() {
