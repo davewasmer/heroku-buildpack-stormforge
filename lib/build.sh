@@ -155,7 +155,6 @@ install_npm() {
     info "Using default npm version: `npm --version`"
   fi
 }
-}
 
 install_autossh() {
   info "Downloading and installing autossh 1.4e ..."
