@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # bin/release <build-dir>
 cat << EOF
-addons: []
+addons:
+  - logentries:tryit
+  - librato:development
+  - rollbar:free
+  - codeship:free
+  - mandrill:starter
 default_process_types: {}
 EOF
